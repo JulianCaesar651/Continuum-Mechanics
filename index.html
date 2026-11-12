@@ -258,6 +258,31 @@ article.exc > h3 span.src { display: table; background: var(--panel); border: 1p
 .mistake p { margin: 0 0 .4rem; }
 .flag { display: inline-block; font-family: var(--sans); font-size: .8rem; font-weight: 700; color: var(--tension); }
 .fb b.alt { color: var(--ochre); }
+.types { display: grid; gap: .6rem; max-width: 52rem; margin-top: 1rem; }
+details.type { background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; font-family: var(--sans); }
+details.type summary { display: grid; grid-template-columns: 2rem 1fr auto; align-items: center; gap: .75rem; padding: .8rem 1rem; cursor: pointer; list-style: none; }
+details.type summary::-webkit-details-marker { display: none; }
+details.type[open] summary { border-bottom: 1px solid var(--rule); }
+.tn { font-weight: 800; font-size: 1.15rem; color: var(--steel); font-variant-numeric: tabular-nums; }
+.tt { font-weight: 650; font-size: 1rem; line-height: 1.3; }
+.tc { font-size: .75rem; color: var(--muted); border: 1px solid var(--rule); border-radius: 999px; padding: .1rem .55rem; white-space: nowrap; }
+.tb { padding: .85rem 1rem 1rem 3.75rem; font-size: .92rem; line-height: 1.55; }
+.tb ol { margin: .4rem 0 .7rem; padding-left: 1.2rem; }
+.tb li { margin-bottom: .3rem; }
+.tb p { margin: 0 0 .5rem; }
+.tb b { font-weight: 700; margin-right: .35rem; }
+.rec b { color: var(--steel); } .slip b { color: var(--tension); }
+.seen { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .6rem !important; }
+.seen a { font-size: .8rem; font-weight: 600; text-decoration: none; border: 1px solid var(--rule); border-radius: 999px; padding: .15rem .6rem; background: var(--paper); }
+.seen a:hover { border-color: var(--steel); }
+@media (max-width: 600px) { .tb { padding-left: 1rem; } details.type summary { grid-template-columns: 1.6rem 1fr; } .tc { display: none; } }
+.toc a { grid-template-columns: 1.6rem 1fr auto; }
+.prog { font-size: .72rem; font-weight: 600; color: var(--muted); font-variant-numeric: tabular-nums; padding-left: .4rem; }
+.prog.full { color: var(--good); }
+.prog-total { font-family: var(--sans); font-size: .9rem; font-weight: 600; color: var(--muted); margin: 1rem 0 0; }
+.prog-total .bar { display: block; height: 6px; max-width: 22rem; background: var(--rule); border-radius: 3px; margin-top: .4rem; overflow: hidden; }
+.prog-total .bar i { display: block; height: 100%; background: var(--good); }
+article.exc.done > h3::after { content: "✓ Done"; display: inline-block; margin-left: .6rem; font-size: .72rem; font-weight: 700; color: var(--good); border: 1px solid var(--good); border-radius: 999px; padding: .05rem .5rem; vertical-align: middle; }
 details.sol { margin: 1rem 0 .5rem; max-width: 46rem; }
 details.sol summary { font-family: var(--sans); font-weight: 650; cursor: pointer; color: var(--steel); }
 details.sol .prose { padding-top: .5rem; }
@@ -310,6 +335,8 @@ details.sol .prose { padding-top: .5rem; }
       <li><a href="#ex-w8"><span>8</span><span>Rayleigh–Ritz &amp; FEM</span></a></li>
     </ol>
     <ol class="navset" data-view="exams" hidden>
+      <li class="part">Overview</li>
+      <li><a href="#exam-types"><span>★</span><span>Question types</span></a></li>
       <li class="part">By week</li>
       <li><a href="#exam-w1"><span>1</span><span>Governing equations</span></a></li>
       <li><a href="#exam-w2"><span>2</span><span>Strain tensors</span></a></li>
@@ -320,7 +347,7 @@ details.sol .prose { padding-top: .5rem; }
       <li><a href="#exam-w7"><span>7</span><span>Potential energy</span></a></li>
       <li><a href="#exam-w8"><span>8</span><span>Rayleigh–Ritz</span></a></li>
     </ol>
-    <div class="tools"><button type="button" id="themeBtn">Switch theme</button></div>
+    <div class="tools"><button type="button" id="themeBtn">Switch theme</button> <button type="button" id="resetProg">Reset progress</button></div>
   </nav>
 
   <main>
@@ -1023,6 +1050,7 @@ details.sol .prose { padding-top: .5rem; }
         <p class="code">WB2630 T2 · Practice</p>
         <h1>Exercises</h1>
         <p>Every exercise from the weekly sheets, many with an interactive figure. Type your answer and check it; you can enter numbers, fractions or expressions such as <code>1-a</code>, <code>sqrt(3)/2*(sqrt(3)+a)</code> or <code>(5a^2-1)/2</code>. The live values under each figure are blurred until you choose to show them.</p>
+        <p class="prog-total" id="progEx"></p>
       </header>
 
       <!-- WEEK 1 -->
@@ -2045,7 +2073,94 @@ details.sol .prose { padding-top: .5rem; }
           <div><b>Grading</b>Steps earn points; an unjustified final answer earns none.</div>
           <div><b>Scope this year</b>Slides of weeks 1–5 and the exercise sheets up to week 8.</div>
         </div>
+        <p class="prog-total" id="progExams"></p>
+        <a class="cta" href="#exam-types">Start with the recurring question types</a>
       </header>
+
+      <section class="chapter" id="exam-types">
+        <header><span class="num">★</span><span class="week">Overview</span><h2>Recurring question types</h2></header>
+        <div class="prose"><p>Across the four exams the same eleven question types keep coming back. Question 1 is usually built from types 1–6, question 2 from types 7–11. Open a type for a short recipe, the slip that costs the most points, and links to every place it appears.</p></div>
+        <div class="types">
+
+          <details class="type"><summary><span class="tn">1</span><span class="tt">Choosing strain gauges and finding constants</span><span class="tc">2 exams</span></summary><div class="tb">
+            <p class="rec"><b>Recognise it</b> Displacements with unknown constants, a point, gauge readings and several gauge setups.</p>
+            <ol><li>Compute the strain components at the point from the displacements, in terms of the unknowns.</li><li>Note which components are already known (independent of the unknowns).</li><li>Each gauge gives one equation \(\epsilon_M = \mathbf M^{\mathsf T}\boldsymbol\epsilon\,\mathbf M\). A good setup gives as many independent equations as there are unknown components; a gauge along an already-known component is wasted.</li><li>Solve, then check the readings with the values found.</li></ol>
+            <p class="slip"><b>Common slip</b> Forgetting to justify why the other setups fail. Say it per setup: “only one useful measure for two unknowns”.</p>
+            <p class="seen"><a href="#exam-26a-1a">Apr 2026 1a</a><a href="#exam-25j-1c">Jan 2025 1c</a><a href="#ex-w2-e4">Week 2 Ex. 4</a><a href="#ex-w2-e5">Week 2 Ex. 5</a></p>
+          </div></details>
+
+          <details class="type"><summary><span class="tn">2</span><span class="tt">Change in angle: finding constants from cos φ</span><span class="tc">2 exams</span></summary><div class="tb">
+            <p class="rec"><b>Recognise it</b> Two directions \(\mathbf M\), \(\mathbf N\), a given \(\cos\varphi\) after deformation, and an unknown in \(\mathbf E\) or in the placement.</p>
+            <ol><li>Write \(\cos\varphi = \dfrac{\cos\Phi + 2\mathbf M^{\mathsf T}\mathbf E\mathbf N}{\sqrt{1+2E_M}\sqrt{1+2E_N}}\) (on the formula sheet).</li><li>Normalise \(\mathbf M\), \(\mathbf N\) and read \(\Phi\) from the figure (often \(\pi/2\)).</li><li>Compute \(2\mathbf M^{\mathsf T}\mathbf E\mathbf N\), \(E_M\), \(E_N\) separately and number them, as the model answers do.</li><li>Solve; with a quadratic, pick the root allowed by the given sign condition.</li></ol>
+            <p class="slip"><b>Common slip</b> Using \(\boldsymbol\epsilon\) instead of \(\mathbf E\) when no small-strain assumption is made.</p>
+            <p class="seen"><a href="#exam-26j-1a">Jan 2026 1a</a><a href="#exam-25a-1a">Apr 2025 1a</a><a href="#ex-w2-e6">Week 2 Ex. 6</a></p>
+          </div></details>
+
+          <details class="type"><summary><span class="tn">3</span><span class="tt">Stress vector on a cut or facet</span><span class="tc">2 exams</span></summary><div class="tb">
+            <p class="rec"><b>Recognise it</b> A body is cut, a point lies on the cut, and the normal stress or the shear (tangent) stress vector is asked or given.</p>
+            <ol><li>Find the outward unit normal of the part you study, from the geometry of the cut.</li><li>\(\mathbf p = \boldsymbol\sigma^{\mathsf T}\mathbf n\), evaluated at the point.</li><li>\(\sigma = \mathbf n\cdot\mathbf p\); \(\boldsymbol\sigma_\tau = \mathbf p - \sigma\mathbf n\), or \((\mathbf p\cdot\mathbf t)\mathbf t\) in 2D.</li><li>Add the extra relation from the stress state (e.g. plane strain: \(\sigma_{33} = \nu(\sigma_{11} + \sigma_{22})\)).</li></ol>
+            <p class="slip"><b>Common slip</b> Taking the normal of the wrong part: the left and right part have opposite normals.</p>
+            <p class="seen"><a href="#exam-25a-1b">Apr 2025 1b</a><a href="#exam-26a-1b">Apr 2026 1b</a><a href="#ex-w3-e1">Week 3 Ex. 1</a><a href="#ex-w3-e4">Week 3 Ex. 4</a></p>
+          </div></details>
+
+          <details class="type"><summary><span class="tn">4</span><span class="tt">Constants or body forces from volume equilibrium</span><span class="tc">2 exams</span></summary><div class="tb">
+            <p class="rec"><b>Recognise it</b> A stress field depending on position, and \(\rho\mathbf f\) or \(f_i\) at a point given or asked.</p>
+            <ol><li>Write \(\sum_j \partial\sigma_{ji}/\partial x_j + \rho f_i = 0\) for each needed direction, with all three terms written out.</li><li>Differentiate first, then substitute the coordinates of the point.</li><li>Solve one direction at a time; often one equation contains a single unknown.</li></ol>
+            <p class="slip"><b>Common slip</b> Substituting the point before differentiating, or losing the sign of \(\rho f_i\).</p>
+            <p class="seen"><a href="#exam-25j-1b">Jan 2025 1b</a><a href="#exam-26a-1b">Apr 2026 1b</a><a href="#ex-w4-e2">Week 4 Ex. 2</a><a href="#ex-w4-e6">Week 4 Ex. 6</a></p>
+          </div></details>
+
+          <details class="type"><summary><span class="tn">5</span><span class="tt">Boundary conditions on a loaded edge</span><span class="tc">2 exams</span></summary><div class="tb">
+            <p class="rec"><b>Recognise it</b> A force per unit area on an edge or small face, and equilibrium equations or stresses at that edge asked.</p>
+            <ol><li>Outward unit normal of the edge from the geometry (angles and side lengths).</li><li>Components of \(\mathbf q\) from its magnitude and direction; pressing into the body gives negative components along \(\mathbf n\).</li><li>Write \(q_i = \sum_j\sigma_{ji}n_j\) for each in-plane direction.</li><li>Add any extra given relation and solve.</li></ol>
+            <p class="slip"><b>Common slip</b> Wrong sign of \(\mathbf q\). Draw the arrow and read off each component.</p>
+            <p class="seen"><a href="#exam-25j-1d">Jan 2025 1d</a><a href="#exam-26j-1c">Jan 2026 1c</a><a href="#ex-w4-e1">Week 4 Ex. 1</a><a href="#ex-w4-e4">Week 4 Ex. 4</a></p>
+          </div></details>
+
+          <details class="type"><summary><span class="tn">6</span><span class="tt">Plane stress, strong form and material behaviour</span><span class="tc">3 exams</span></summary><div class="tb">
+            <p class="rec"><b>Recognise it</b> “Which assumption allows a 2D model?”, “write the strong form”, “is this curve elastic?”.</p>
+            <ol><li>Name the assumption and give both reasons (thin in one direction; loaded only in the plane).</li><li>List the unknowns: displacements, strains, stresses.</li><li>Write kinematic, equilibrium and constitutive equations fully and separately.</li><li>Finish with boundary conditions: static on \(a_q\) (with the outward normal), kinematic on \(a_u\).</li></ol>
+            <p class="slip"><b>Common slip</b> Calling a nonlinear curve inelastic. Elastic means unloading retraces loading; linear is a separate property.</p>
+            <p class="seen"><a href="#exam-25j-1a">Jan 2025 1a</a><a href="#exam-26j-1b">Jan 2026 1b</a><a href="#exam-25a-1c">Apr 2025 1c</a><a href="#exam-25a-1d">Apr 2025 1d</a><a href="#ex-w5-e5">Week 5 Ex. 5</a></p>
+          </div></details>
+
+          <details class="type"><summary><span class="tn">7</span><span class="tt">Relating virtual angles: f[α, γ]</span><span class="tc">3 exams</span></summary><div class="tb">
+            <p class="rec"><b>Recognise it</b> A mechanism described by two angles, and “build \(f\) such that \(\delta\gamma = f\,\delta\alpha\)”.</p>
+            <ol><li>Find a distance that can’t change because of a support or slider (e.g. the height difference between two pinned points, or a horizontal position fixed by a vertical slider).</li><li>Write that distance with both angles, along both branches of the mechanism.</li><li>Take the variation and set it to zero.</li><li>Solve for the ratio of virtual angles.</li></ol>
+            <p class="slip"><b>Common slip</b> Mixing up which angle is measured from the horizontal and which from the vertical: sin and cos swap.</p>
+            <p class="seen"><a href="#exam-25j-2a">Jan 2025 2a</a><a href="#exam-26j-2b">Jan 2026 2b</a><a href="#exam-26a-2a">Apr 2026 2a</a><a href="#ex-w6-e3">Week 6 Ex. 3</a><a href="#ex-w6-e4">Week 6 Ex. 4</a></p>
+          </div></details>
+
+          <details class="type"><summary><span class="tn">8</span><span class="tt">Virtual work for a mechanism</span><span class="tc">3 exams</span></summary><div class="tb">
+            <p class="rec"><b>Recognise it</b> “Use the principle of virtual work” with forces, masses and springs on a mechanism.</p>
+            <ol><li>Write the position of each loaded point along the direction of its force; take the variation.</li><li>External: \(\delta W_E = \sum F\,\delta x\), with the sign set by the force direction.</li><li>Internal (springs): \(\delta W_I = k\,\Delta\ell\,\delta\Delta\ell\), with \(\Delta\ell\) measured from the unloaded configuration.</li><li>Express everything in one virtual angle using \(f\) (keep \(f\) symbolic if the question says so), then \(\delta W_E = \delta W_I\).</li></ol>
+            <p class="slip"><b>Common slip</b> Replacing \(f\) by its expression when the question says to keep it, or using a different principle: full points require the one asked.</p>
+            <p class="seen"><a href="#exam-25j-2b">Jan 2025 2b</a><a href="#exam-26j-2b">Jan 2026 2b</a><a href="#exam-26a-2a">Apr 2026 2a</a><a href="#ex-w6-e1">Week 6 Ex. 1</a><a href="#ex-w6-e5">Week 6 Ex. 5</a></p>
+          </div></details>
+
+          <details class="type"><summary><span class="tn">9</span><span class="tt">Force potentials and minimum potential energy</span><span class="tc">3 exams</span></summary><div class="tb">
+            <p class="rec"><b>Recognise it</b> “Compute the force potential”, “its variation”, or “use minimum potential energy to find \(k\) / \(M\)”.</p>
+            <ol><li>Gravity: \(\mathcal F = mg\,(h - h_0)\). Constant force: \(\mathcal F = -F\,(x - x_0)\) along its direction.</li><li>Spring: \(\mathcal U = \tfrac12k(\ell - \ell_0)^2\), with \(\ell\) from the geometry (often via Pythagoras).</li><li>\(\mathcal P = \mathcal U + \mathcal F\); set \(d\mathcal P/d\varphi = 0\) and solve.</li><li>For stability, check \(d^2\mathcal P/d\varphi^2 &gt; 0\) at the equilibrium.</li></ol>
+            <p class="slip"><b>Common slip</b> Forgetting that \(\mathcal F\) is <em>minus</em> the work: a mass going down lowers \(\mathcal F\).</p>
+            <p class="seen"><a href="#exam-26j-2a">Jan 2026 2a</a><a href="#exam-25j-2c">Jan 2025 2c</a><a href="#exam-26a-2b">Apr 2026 2b</a><a href="#ex-w7-e3">Week 7 Ex. 3</a><a href="#ex-w7-e5">Week 7 Ex. 5</a></p>
+          </div></details>
+
+          <details class="type"><summary><span class="tn">10</span><span class="tt">Assumptions behind the energy principles</span><span class="tc">3 exams</span></summary><div class="tb">
+            <p class="rec"><b>Recognise it</b> “Which assumption…?”, “what does it require?”, “compatible versus admissible?”, “draw the admissible displacements”.</p>
+            <ol><li>Kinematically admissible: continuity of the body <em>and</em> the kinematic boundary conditions; then reactions do no virtual work.</li><li>Compatible only requires continuity.</li><li>Minimum potential energy also needs a conservative material and conservative forces.</li><li>Always apply the answer to the given mechanism: which joints can’t move, which slide, why the material and forces are conservative.</li></ol>
+            <p class="slip"><b>Common slip</b> Giving only the general definition without saying what it means for the specific supports and loads.</p>
+            <p class="seen"><a href="#exam-25j-2d">Jan 2025 2d</a><a href="#exam-26j-2c">Jan 2026 2c</a><a href="#exam-26a-2c">Apr 2026 2c</a><a href="#ex-w7-e2">Week 7 Ex. 2</a></p>
+          </div></details>
+
+          <details class="type"><summary><span class="tn">11</span><span class="tt">Rayleigh–Ritz approximation</span><span class="tc">1 exam</span></summary><div class="tb">
+            <p class="rec"><b>Recognise it</b> A trial displacement with unknown coefficients for a bar or beam.</p>
+            <ol><li>Make it admissible: continuity and kinematic boundary conditions; this removes coefficients.</li><li>Write \(\mathcal P\): elastic part \(\int\tfrac12EA(u')^2dx\) (split the integral where \(A\) changes), force potential with the sign set by the load direction.</li><li>\(\partial\mathcal P/\partial a_i = 0\) and solve.</li><li>For “better or not?” questions: richer is better only if all admissible lower-order terms are kept.</li></ol>
+            <p class="slip"><b>Common slip</b> Wrong sign when gravity acts against the \(x\)-axis.</p>
+            <p class="seen"><a href="#exam-25a-2a">Apr 2025 2a</a><a href="#exam-25a-2b">Apr 2025 2b</a><a href="#exam-25a-2c">Apr 2025 2c</a><a href="#ex-w8-e1">Week 8 Ex. 1</a><a href="#ex-w8-e3">Week 8 Ex. 3</a></p>
+          </div></details>
+
+        </div>
+      </section>
 
       <!-- W1 -->
       <section class="chapter" id="exam-w1">
@@ -2829,6 +2944,47 @@ details.sol .prose { padding-top: .5rem; }
     }
     return true;
   }
+
+  /* --- Progress (saved in this browser) --- */
+  const PKEY = 'cm-progress-v1';
+  let prog = {};
+  try { prog = JSON.parse(localStorage.getItem(PKEY) || '{}') || {}; } catch (e) { prog = {}; }
+  function saveProg() { try { localStorage.setItem(PKEY, JSON.stringify(prog)); } catch (e) {} }
+  function qKey(q) { const art = q.closest('article.exc'); if (!art || !art.id) return null; return art.id + ':' + [...art.querySelectorAll('.q')].indexOf(q); }
+  function recordQ(q, ok, val) { const k = qKey(q); if (!k) return; if (ok) prog[k] = { v: val == null ? null : val }; else delete prog[k]; saveProg(); updateProgress(); }
+  function restoreProgress() {
+    Object.entries(prog).forEach(([k, s]) => {
+      const [aid, idx] = k.split(':'), art = document.getElementById(aid); if (!art) return;
+      const q = art.querySelectorAll('.q')[parseInt(idx)]; if (!q) return;
+      q.classList.add('correct'); const fb = q.querySelector('.fb');
+      if (q.classList.contains('choice')) { const b = q.querySelector('.opts button[data-correct]'); if (b) b.classList.add('right'); q.querySelectorAll('.opts button').forEach(o => o.disabled = true); }
+      else if (q.classList.contains('multi')) { (s.v || '').split(',').forEach(v => { const c = q.querySelector(`.checks input[value="${v}"]`); if (c) c.checked = true; }); }
+      else { const inp = q.querySelector('input'); if (inp && s.v != null) inp.value = s.v; }
+      if (fb) fb.innerHTML = '<b class="ok">Correct</b> (saved).';
+    });
+  }
+  function updateProgress() {
+    document.querySelectorAll('article.exc').forEach(a => { const qs = a.querySelectorAll('.q'); a.classList.toggle('done', qs.length > 0 && [...qs].every(q => q.classList.contains('correct'))); });
+    document.querySelectorAll('.navset a').forEach(a => {
+      const id = a.getAttribute('href').slice(1); if (!/^(ex|exam)-w\d$/.test(id)) return;
+      const sec = document.getElementById(id); if (!sec) return;
+      const qs = sec.querySelectorAll('article.exc .q'), d = sec.querySelectorAll('article.exc .q.correct').length;
+      let s = a.querySelector('.prog'); if (!s) { s = document.createElement('span'); s.className = 'prog'; a.appendChild(s); }
+      s.textContent = qs.length ? `${d}/${qs.length}` : ''; s.classList.toggle('full', qs.length > 0 && d === qs.length);
+    });
+    [['progEx', 'view-exercises', 'exercise questions'], ['progExams', 'view-exams', 'exam questions']].forEach(([id, vid, name]) => {
+      const el = $(id); if (!el) return; const v = $(vid), n = v.querySelectorAll('article.exc .q').length, d = v.querySelectorAll('article.exc .q.correct').length;
+      el.innerHTML = `${d} of ${n} ${name} answered correctly<span class="bar"><i style="width:${n ? d / n * 100 : 0}%"></i></span>`;
+    });
+  }
+  const rb = $('resetProg'); let rbArmed = false;
+  rb.addEventListener('click', () => {
+    if (!rbArmed) { rbArmed = true; rb.textContent = 'Click again to reset'; setTimeout(() => { rbArmed = false; rb.textContent = 'Reset progress'; }, 4000); return; }
+    prog = {}; saveProg();
+    document.querySelectorAll('.q.correct').forEach(q => { q.classList.remove('correct'); const fb = q.querySelector('.fb'); if (fb) fb.innerHTML = ''; const inp = q.querySelector('.qrow input'); if (inp) inp.value = ''; q.querySelectorAll('.opts button').forEach(o => { o.disabled = false; o.classList.remove('right', 'wrong'); }); q.querySelectorAll('.checks input').forEach(c => c.checked = false); });
+    rbArmed = false; rb.textContent = 'Reset progress'; updateProgress();
+  });
+
   document.querySelectorAll('.q[data-answer]').forEach(q => {
     const inp = q.querySelector('input'), btn = q.querySelector('.qrow button'), fb = q.querySelector('.fb');
     let tries = 0;
@@ -2839,9 +2995,9 @@ details.sol .prose { padding-top: .5rem; }
       try { ok = checkAnswer(val, q.dataset.answer, vars, q.dataset.tol != null ? parseFloat(q.dataset.tol) : null); }
       catch (e) { fb.innerHTML = '<b class="no">Can’t read that.</b> ' + e.message + (vars.length ? '. Use ' + vars.join(', ') + ' as symbols.' : '.'); return; }
       tries++;
-      q.classList.toggle('correct', ok);
+      q.classList.toggle('correct', ok); recordQ(q, ok, val);
       if (!ok && q.dataset.alt) { let alt = false; try { alt = checkAnswer(val, q.dataset.alt, vars, q.dataset.tol != null ? parseFloat(q.dataset.tol) : null); } catch (e) {}
-        if (alt) { fb.innerHTML = '<b class="alt">Matches the recomputed value</b>, not the official solution. See the warning on this card.'; return; } }
+        if (alt) { q.classList.add('correct'); recordQ(q, true, val); fb.innerHTML = '<b class="alt">Matches the recomputed value</b>, not the official solution. See the warning on this card.'; return; } }
       if (ok) fb.innerHTML = '<b class="ok">Correct</b> (matches the official solution).' + (q.dataset.alt ? ' Note the warning on this card.' : '');
       else fb.innerHTML = '<b class="no">Not quite.</b>' + (tries >= 2 && fb.dataset.hint ? `<span class="hint">Hint: ${fb.dataset.hint}</span>` : ' Try again.');
     };
@@ -2852,7 +3008,7 @@ details.sol .prose { padding-top: .5rem; }
     const fb = q.querySelector('.fb');
     q.querySelectorAll('.opts button').forEach(b => b.addEventListener('click', () => {
       const ok = b.hasAttribute('data-correct'); b.classList.add(ok ? 'right' : 'wrong');
-      if (ok) { q.classList.add('correct'); q.querySelectorAll('.opts button').forEach(o => o.disabled = true); }
+      if (ok) { q.classList.add('correct'); q.querySelectorAll('.opts button').forEach(o => o.disabled = true); recordQ(q, true, null); }
       fb.innerHTML = ok ? '<b class="ok">Correct.</b> ' + (fb.dataset.explain || '') : '<b class="no">Not quite.</b> Try another one.';
     }));
   });
@@ -3173,7 +3329,7 @@ details.sol .prose { padding-top: .5rem; }
     q.querySelector('.qrow button').addEventListener('click', () => {
       const got = [...q.querySelectorAll('.checks input:checked')].map(i => i.value).sort().join(',');
       if (!got) { fb.innerHTML = 'Select at least one option.'; return; }
-      tries++; const ok = got === want; q.classList.toggle('correct', ok);
+      tries++; const ok = got === want; q.classList.toggle('correct', ok); if (ok) recordQ(q, true, got);
       fb.innerHTML = ok ? '<b class="ok">Correct.</b>' : '<b class="no">Not quite.</b>' + (tries >= 2 && fb.dataset.hint ? `<span class="hint">Hint: ${fb.dataset.hint}</span>` : ' Check your selection again.');
     });
   });
@@ -3277,6 +3433,7 @@ details.sol .prose { padding-top: .5rem; }
   const links = [...document.querySelectorAll('.toc a')];
   const obs = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + en.target.id)); }), { rootMargin: '-40% 0px -55% 0px' });
   document.querySelectorAll('section.chapter').forEach(s => obs.observe(s));
+  restoreProgress(); updateProgress();
   route();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawAll);
 })();
